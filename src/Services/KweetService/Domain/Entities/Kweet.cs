@@ -6,7 +6,9 @@ namespace Kwetter.Services.KweetService.Domain
 {
     public class Kweet
     {
-        public Guid Id { get; set; }
+        public Guid KweetId { get; set; }
+
+        public Guid SenderProfileId { get; set; }
 
         public string KweetMessage { get; set; }
 
