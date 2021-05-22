@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>Kwetter.Services.ProfileService.Application</AssemblyName>
+    <RootNamespace>Kwetter.Services.ProfileService.Application</RootNamespace>
+  </PropertyGroup>
+
+</Project>
