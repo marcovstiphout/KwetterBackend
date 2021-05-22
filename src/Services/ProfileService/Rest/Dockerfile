@@ -4,10 +4,10 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY ["Services/KweetService/Rest/Kwetter.Services.ProfileService.Rest.csproj", "Rest/"]
-COPY ["Services/KweetService/Domain/Kwetter.Services.ProfileService.Domain.csproj", "Domain/"]
-COPY ["Services/KweetService/Persistence/Kwetter.Services.ProfileService.Persistence.csproj", "Persistence/"]
-COPY ["Services/KweetService/Application/Kwetter.Services.ProfileService.Application.csproj", "Application/"]
+COPY ["Services/ProfileService/Rest/Kwetter.Services.ProfileService.Rest.csproj", "Rest/"]
+COPY ["Services/ProfileService/Domain/Kwetter.Services.ProfileService.Domain.csproj", "Domain/"]
+COPY ["Services/ProfileService/Persistence/Kwetter.Services.ProfileService.Persistence.csproj", "Persistence/"]
+COPY ["Services/ProfileService/Application/Kwetter.Services.ProfileService.Application.csproj", "Application/"]
 
 RUN dotnet restore "Rest/Kwetter.Services.ProfileService.Rest.csproj"
 COPY . .
