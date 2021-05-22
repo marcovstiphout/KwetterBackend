@@ -8,11 +8,13 @@ using Kwetter.Services.KweetService.Domain;
 using Kwetter.Services.KweetService.Application.Common.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
 using Kwetter.Services.KweetService.Rest.Models.Requests;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Kwetter.KweetService.Rest.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class KweetController : ControllerBase
     {
         private readonly ILogger<KweetController> _logger;
