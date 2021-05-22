@@ -53,7 +53,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kwetter.Services.ProfileSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kwetter.Services.ProfileService.Persistence", "Services\ProfileService\Persistence\Kwetter.Services.ProfileService.Persistence.csproj", "{0FF5EF30-456F-4B53-845E-B5C47503C8F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Services\ProfileService\Tests\Tests.csproj", "{3AF51AB6-1C8B-473B-B438-826533F46B99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kwetter.Services.ProfileService.Tests", "Services\ProfileService\Tests\Kwetter.Services.ProfileService.Tests.csproj", "{3AF51AB6-1C8B-473B-B438-826533F46B99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

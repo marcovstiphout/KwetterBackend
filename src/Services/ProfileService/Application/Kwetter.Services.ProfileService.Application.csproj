@@ -6,4 +6,20 @@
     <RootNamespace>Kwetter.Services.ProfileService.Application</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\Interfaces\Handlers\" />
+    <Folder Include="Events\" />
+    <Folder Include="Handlers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Kwetter.Services.ProfileService.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
