@@ -9,5 +9,7 @@ namespace Kwetter.Services.AuthService.Application.Common.Interfaces
     public interface IAuthService
     {
         Task<AuthResponseDto> AuthorizeAsync(string code);
+        Task<bool> CheckAccountExistsAsync(string email);
+        Task<bool> CreateAccountAsync(string email, string name);
     }
 }

@@ -36,6 +36,7 @@ namespace Rest.Controllers
 
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
+        //ToDo: Make this more SOLID by splitting responsibilities. Possibly even extracting the Google Methods into a seperate file.
         [Route("google-response")]
         public async Task<IActionResult> GoogleResponse()
         {
@@ -49,6 +50,20 @@ namespace Rest.Controllers
                     claim.Type,
                     claim.Value
                 });
+
+            //Check if Account Exists
+            string email = claims.FirstOrDefault(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
+            if(_authService.CheckAccountExistsAsync(email).Result)
+            {
+                //If exists, create a new JWT and return it
+                var test = "test";
+            }
+            else
+            {
+                //If it does not exist, register account and place message on Queue to create a new Profile.
+                _authService.CreateAccountAsync(email, "Test");
+            }
+            
             return new JsonResult(claims);
         }
     }
