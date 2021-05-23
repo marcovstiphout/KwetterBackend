@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kwetter.Services.KweetService.Persistence.Migrations
 {
     [DbContext(typeof(KweetContext))]
-    [Migration("20210521192638_Init")]
+    [Migration("20210523103706_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,23 @@ namespace Kwetter.Services.KweetService.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Kwetter.Services.KweetService.Domain.Entities.Profile", b =>
+                {
+                    b.Property<Guid>("ProfileId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProfileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProfileId");
+
+                    b.ToTable("Profiles");
+                });
 
             modelBuilder.Entity("Kwetter.Services.KweetService.Domain.Kweet", b =>
                 {

@@ -20,12 +20,28 @@ namespace Kwetter.Services.KweetService.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Kweets", x => x.KweetId);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Profiles",
+                columns: table => new
+                {
+                    ProfileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProfileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Profiles", x => x.ProfileId);
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Kweets");
+
+            migrationBuilder.DropTable(
+                name: "Profiles");
         }
     }
 }

@@ -11,7 +11,8 @@ namespace Kwetter.Services.ProfileService.Persistence.Migrations
                 name: "Profiles",
                 columns: table => new
                 {
-                    profileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProfileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AuthId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProfileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Bio = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -20,7 +21,7 @@ namespace Kwetter.Services.ProfileService.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Profiles", x => x.profileId);
+                    table.PrimaryKey("PK_Profiles", x => x.ProfileId);
                 });
         }
 

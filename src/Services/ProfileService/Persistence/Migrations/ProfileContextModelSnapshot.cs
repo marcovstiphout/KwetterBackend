@@ -21,8 +21,11 @@ namespace Kwetter.Services.ProfileService.Persistence.Migrations
 
             modelBuilder.Entity("Kwetter.Services.ProfileService.Domain.Profile", b =>
                 {
-                    b.Property<Guid>("profileId")
+                    b.Property<Guid>("ProfileId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AuthId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Bio")
@@ -40,7 +43,7 @@ namespace Kwetter.Services.ProfileService.Persistence.Migrations
                     b.Property<string>("Website")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("profileId");
+                    b.HasKey("ProfileId");
 
                     b.ToTable("Profiles");
                 });

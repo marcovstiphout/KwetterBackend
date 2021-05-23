@@ -15,6 +15,7 @@ namespace Kwetter.Services.KweetService.Application.Common.Models
         public string KweetMessage { get; set; }
 
         public DateTime KweetPostDate { get; set; }
+        public int AmountOfLikes { get; set; }
 
         public static implicit operator KweetDTO(Kweet v)
         {

@@ -19,6 +19,23 @@ namespace Kwetter.Services.KweetService.Persistence.Migrations
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Kwetter.Services.KweetService.Domain.Entities.Profile", b =>
+                {
+                    b.Property<Guid>("ProfileId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProfileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProfileId");
+
+                    b.ToTable("Profiles");
+                });
+
             modelBuilder.Entity("Kwetter.Services.KweetService.Domain.Kweet", b =>
                 {
                     b.Property<Guid>("KweetId")
