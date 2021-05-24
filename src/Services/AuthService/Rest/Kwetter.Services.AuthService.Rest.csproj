@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\KwetterShared\Kwetter.Services.Shared.csproj" />
     <ProjectReference Include="..\Infrastructure\Kwetter.Services.AuthService.Infrastructure.csproj" />
     <ProjectReference Include="..\Persistence\Kwetter.Services.AuthService.Persistence.csproj" />
   </ItemGroup>

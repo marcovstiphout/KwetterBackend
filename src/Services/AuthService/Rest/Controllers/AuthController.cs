@@ -1,5 +1,6 @@
 ﻿using Kwetter.Services.AuthService.Application.Common.Interfaces;
 using Kwetter.Services.AuthService.Rest.Models.Requests;
+using Kwetter.Services.Shared.Messaging.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -16,10 +17,12 @@ namespace Rest.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private IMessagePublisher _publisher;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IMessagePublisher publisher)
         {
             _authService = authService;
+            _publisher = publisher;
         }
 
         [HttpPost("")]
@@ -61,7 +64,8 @@ namespace Rest.Controllers
             else
             {
                 //If it does not exist, register account and place message on Queue to create a new Profile.
-                _authService.CreateAccountAsync(email, "Test");
+                await _authService.CreateAccountAsync(email, "Test");
+                _publisher.PublishMessageAsync<string>("AccountCreated", "MarcoTest");
             }
             
             return new JsonResult(claims);

@@ -7,9 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Interfaces\Handlers\" />
     <Folder Include="Events\" />
-    <Folder Include="Handlers\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\KwetterShared\Kwetter.Services.Shared.csproj" />
     <ProjectReference Include="..\Domain\Kwetter.Services.ProfileService.Domain.csproj" />
   </ItemGroup>
 
