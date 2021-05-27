@@ -35,8 +35,8 @@ namespace Kwetter.Services.AuthService.Rest
                 })
                 //TODO: Get this data from config file instead
                 .AddGoogle(options => {
-                    options.ClientId = "CLIENTID";
-                    options.ClientSecret = "CLIENTSECRET";
+                    options.ClientId = Configuration.GetValue<string>("Google:ClientId");
+                    options.ClientSecret = Configuration.GetValue<string>("Google:ClientSecret"); ;
                 });
 
             services.AddControllers();
