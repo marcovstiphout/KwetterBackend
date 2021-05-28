@@ -1,4 +1,4 @@
-﻿using Kwetter.Services.AuthService.Application.Common.Models;
+﻿using Microsoft.AspNetCore.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +8,7 @@ namespace Kwetter.Services.AuthService.Application.Common.Interfaces
 {
     public interface IAuthService
     {
-        Task<AuthResponseDto> AuthorizeAsync(string code);
+        Task<bool> AuthorizeAsync(AuthenticateResult authResult);
         Task<bool> CheckAccountExistsAsync(string email);
         Task<bool> CreateAccountAsync(string email, string name);
     }

@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Kwetter.Services.AuthService.Application.Common.Interfaces;
-using Kwetter.Services.AuthService.Application.Common.Models;
+using Kwetter.Services.Shared.Messaging.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,42 +13,36 @@ namespace Kwetter.Services.AuthService.Application.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly IAuthHttpRequest _authHttpRequest;
+        private readonly IMessagePublisher _publisher;
         private readonly IAuthContext _authContext;
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
 
-        public AuthService(IAuthHttpRequest authHttpRequest, IAuthContext authContext)
+        public AuthService(IMessagePublisher publisher, IAuthContext authContext)
         {
-            _authHttpRequest = authHttpRequest;
+            _publisher = publisher;
             _authContext = authContext;
             _jwtSecurityTokenHandler = new JwtSecurityTokenHandler(); ;
         }
-        public async Task<AuthResponseDto> AuthorizeAsync(string code)
+        public async Task<bool> AuthorizeAsync(AuthenticateResult authResult)
         {
-            AuthResponseDto response = await _authHttpRequest.SendAuthRequest(code);
-            if (true)
-            {
-                JwtSecurityToken token = _jwtSecurityTokenHandler.ReadJwtToken(response.IdToken);
-                string openId = token.Subject;
-                User user = _authContext.Users.FirstOrDefault(x => x.LoginProviderId == openId);
-
-                if (user == null)
+          //  AuthResponseDto response = await _authHttpRequest.SendAuthRequest(code);
+            var claims = authResult.Principal.Identities.FirstOrDefault()
+                .Claims.Select(claim => new
                 {
-                    user = new User
-                    {
-                        Id = new Guid(),
-                        Avatar = token.Claims.First(x => x.Type == "picture").Value,
-                        Name = token.Claims.First(x => x.Type == "given_name").Value,
-                        LoginProviderId = openId
-                    };
-                    _authContext.Users.Add(user);
-                    await _authContext.SaveChangesAsync();
-                }
-
-                response.UserId = user.Id;
-
+                    claim.Issuer,
+                    claim.OriginalIssuer,
+                    claim.Type,
+                    claim.Value
+                });
+            var email = claims.FirstOrDefault(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
+            var name = claims.FirstOrDefault(claim => claim.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name").Value; 
+            //Check if Account already exists, and register one if this is not the case. Afterwards generate a JWT
+            if (!CheckAccountExistsAsync(email).Result)
+            {
+                await CreateAccountAsync(email, name);
             }
-            return response;
+            
+            return true;
         }
 
         public async Task<bool> CheckAccountExistsAsync(string email)

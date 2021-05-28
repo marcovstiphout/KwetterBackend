@@ -42,7 +42,7 @@ namespace Kwetter.Services.AuthService.Rest
             services.AddControllers();
             services.AddHttpClient<IAuthService, Application.Services.AuthService>();
             services.AddPersistence(Configuration);
-            services.AddInfrastructure(Configuration);
+       //     services.AddInfrastructure(Configuration);
             services.AddMessaging("AuthService");
             services.AddScoped<IAuthService, Application.Services.AuthService>();
             services.AddSwaggerGen(c =>
