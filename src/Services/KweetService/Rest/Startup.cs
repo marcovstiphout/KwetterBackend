@@ -9,7 +9,6 @@ using Kwetter.Services.KweetService.Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Kwetter.Services.KweetService.Persistence;
 using Application;
-using Kwetter.Services.KweetServioce.Persistence;
 
 namespace Rest
 {

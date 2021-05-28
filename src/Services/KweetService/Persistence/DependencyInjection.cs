@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kwetter.Services.KweetServioce.Persistence
+namespace Kwetter.Services.KweetService.Persistence
 {
     public static class DependencyInjection
     {

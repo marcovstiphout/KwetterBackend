@@ -7,7 +7,6 @@ using Microsoft.OpenApi.Models;
 using Kwetter.Services.AuthService.Persistence.Contexts;
 using Kwetter.Services.AuthService.Application.Common.Interfaces;
 using Persistence;
-using Kwetter.Services.AuthService.Infrastructure;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using KwetterShared;
 
@@ -33,7 +32,6 @@ namespace Kwetter.Services.AuthService.Rest
                 {
                     options.LoginPath = "/api/Auth/google-login";
                 })
-                //TODO: Get this data from config file instead
                 .AddGoogle(options => {
                     options.ClientId = Configuration.GetValue<string>("Google:ClientId");
                     options.ClientSecret = Configuration.GetValue<string>("Google:ClientSecret"); ;
@@ -42,12 +40,11 @@ namespace Kwetter.Services.AuthService.Rest
             services.AddControllers();
             services.AddHttpClient<IAuthService, Application.Services.AuthService>();
             services.AddPersistence(Configuration);
-       //     services.AddInfrastructure(Configuration);
             services.AddMessaging("AuthService");
             services.AddScoped<IAuthService, Application.Services.AuthService>();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Kwetter API", Version = "v1", Description = "The Kweet-API for the Kwetter Project" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Kwetter API", Version = "v1", Description = "The Auth-API for the Kwetter Project" });
             });
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,7 +57,7 @@ namespace Kwetter.Services.AuthService.Rest
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rest v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
