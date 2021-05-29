@@ -1,7 +1,10 @@
 ﻿using Domain;
 using Kwetter.Services.AuthService.Application.Common.Interfaces;
+using Kwetter.Services.AuthService.Infrastructure;
 using Kwetter.Services.Shared.Messaging.Interfaces;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,15 +18,13 @@ namespace Kwetter.Services.AuthService.Application.Services
     {
         private readonly IMessagePublisher _publisher;
         private readonly IAuthContext _authContext;
-        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
 
         public AuthService(IMessagePublisher publisher, IAuthContext authContext)
         {
             _publisher = publisher;
             _authContext = authContext;
-            _jwtSecurityTokenHandler = new JwtSecurityTokenHandler(); ;
         }
-        public async Task<bool> AuthorizeAsync(AuthenticateResult authResult)
+        public async Task<string> AuthorizeAsync(AuthenticateResult authResult)
         {
           //  AuthResponseDto response = await _authHttpRequest.SendAuthRequest(code);
             var claims = authResult.Principal.Identities.FirstOrDefault()
@@ -41,8 +42,8 @@ namespace Kwetter.Services.AuthService.Application.Services
             {
                 await CreateAccountAsync(email, name);
             }
-            
-            return true;
+
+            return TokenGenerator.GenerateToken(JWTSettings.SecretKey, email);
         }
 
         public async Task<bool> CheckAccountExistsAsync(string email)

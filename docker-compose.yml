@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+  db:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      SA_PASSWORD: "HelloStudents!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "7000:1433"
+    volumes:
+      - sqlserver:/sqlserver
+  broker:
+    image: "rabbitmq:3-management"
+    ports:
+      - "7100:15672"
+      - "7101:5672"
+    volumes:
+      - rabbitmq:/rabbitmq
+volumes:
+  rabbitmq:
+    driver: local
+  sqlserver:
+    driver: local

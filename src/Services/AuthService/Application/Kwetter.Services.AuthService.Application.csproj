@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="5.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.6" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
@@ -17,10 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\KwetterShared\Kwetter.Services.Shared.csproj" />
     <ProjectReference Include="..\Domain\Kwetter.Services.AuthService.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\Models\" />
+    <ProjectReference Include="..\Infrastructure\Kwetter.Services.AuthService.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

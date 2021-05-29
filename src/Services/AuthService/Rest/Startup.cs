@@ -9,6 +9,7 @@ using Kwetter.Services.AuthService.Application.Common.Interfaces;
 using Persistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using KwetterShared;
+using Kwetter.Services.AuthService.Infrastructure;
 
 namespace Kwetter.Services.AuthService.Rest
 {
@@ -46,6 +47,7 @@ namespace Kwetter.Services.AuthService.Rest
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Kwetter API", Version = "v1", Description = "The Auth-API for the Kwetter Project" });
             });
+            JWTSettings.SecretKey = Configuration.GetSection("JWTSettings:SecretKey").Value;
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

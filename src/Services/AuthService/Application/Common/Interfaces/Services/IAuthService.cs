@@ -8,7 +8,7 @@ namespace Kwetter.Services.AuthService.Application.Common.Interfaces
 {
     public interface IAuthService
     {
-        Task<bool> AuthorizeAsync(AuthenticateResult authResult);
+        Task<string> AuthorizeAsync(AuthenticateResult authResult);
         Task<bool> CheckAccountExistsAsync(string email);
         Task<bool> CreateAccountAsync(string email, string name);
     }

@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -17,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\KwetterShared\Kwetter.Services.Shared.csproj" />
-    <ProjectReference Include="..\Infrastructure\Kwetter.Services.AuthService.Infrastructure.csproj" />
     <ProjectReference Include="..\Persistence\Kwetter.Services.AuthService.Persistence.csproj" />
   </ItemGroup>
 

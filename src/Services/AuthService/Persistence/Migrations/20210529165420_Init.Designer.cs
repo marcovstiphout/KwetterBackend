@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kwetter.Services.AuthService.Persistence.Migrations
 {
     [DbContext(typeof(AuthContext))]
-    [Migration("20210523123722_Init")]
+    [Migration("20210529165420_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
