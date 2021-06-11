@@ -1,0 +1,54 @@
+name: AuthService
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - src/Services/AuthService/**
+  pull_request:
+    branches: [ master ]
+    paths:
+      - src/Services/AuthService/**
+
+defaults:
+  run:
+    working-directory: src
+    
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      
+  build-docker:
+    needs: [ build ]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the docker AuthService image
+        run: docker build . --file Services/AuthService/Rest/Dockerfile --tag kwetter-auth-service:$(date +%s)
+        
+  publish-docker:
+    if: contains(github.ref, 'master')
+    needs: [build-docker]
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@master
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: marcovstiphout/kwetter-auth-service
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        dockerfile: Services/AuthService/Rest/Dockerfile   
+        workdir: src
