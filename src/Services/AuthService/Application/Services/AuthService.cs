@@ -61,7 +61,7 @@ namespace Kwetter.Services.AuthService.Application.Services
             };
             await _authContext.Users.AddAsync(newUser);
             bool success = await _authContext.SaveChangesAsync() > 0;
-
+            await _publisher.PublishMessageAsync<string>("UserCreatedEvent", "Test");
             if (!success)
             {
                 throw new InvalidOperationException("Something went wrong trying to create the account");

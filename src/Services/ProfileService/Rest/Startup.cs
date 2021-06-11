@@ -30,7 +30,7 @@ namespace Rest
             services.AddApplication(Configuration);
             services.AddMessaging("ProfileService", builder => {
                 // This tells the application that when it receives a `QuestCompleted` message, it should handle it using the `QuestCompletedMessageHandler`.
-                builder.WithHandler<UserRegisteredMessageHandler>("AccountCreated");
+                builder.WithHandler<UserRegisteredMessageHandler>("UserCreatedEvent");
             });
 
             services.AddScoped<IProfileContext>(provider => provider.GetService<ProfileContext>());
