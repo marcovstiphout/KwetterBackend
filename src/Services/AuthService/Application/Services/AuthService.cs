@@ -1,10 +1,12 @@
 ﻿using Domain;
 using Kwetter.Services.AuthService.Application.Common.Interfaces;
+using Kwetter.Services.AuthService.Application.Common.Models;
 using Kwetter.Services.AuthService.Infrastructure;
 using Kwetter.Services.Shared.Messaging.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -61,7 +63,10 @@ namespace Kwetter.Services.AuthService.Application.Services
             };
             await _authContext.Users.AddAsync(newUser);
             bool success = await _authContext.SaveChangesAsync() > 0;
-            await _publisher.PublishMessageAsync<string>("UserCreatedEvent", "Test");
+
+            UserDTO userDTO = newUser;
+
+            await _publisher.PublishMessageAsync<UserDTO>("UserCreatedEvent", userDTO);
             if (!success)
             {
                 throw new InvalidOperationException("Something went wrong trying to create the account");

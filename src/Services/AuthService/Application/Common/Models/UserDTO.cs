@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain;
+using System;
 
 namespace Kwetter.Services.AuthService.Application.Common.Models
 {
@@ -9,5 +10,17 @@ namespace Kwetter.Services.AuthService.Application.Common.Models
         public string Avatar { get; set; }
         public string Email { get; set; }
         public string Token { get; set; }
+
+        public static implicit operator UserDTO(User v)
+        {
+            UserDTO user = new UserDTO()
+            {
+                Id = v.Id,
+                Name = v.Name,
+                Avatar = v.Avatar,
+                Email = v.Email
+            };
+            return user;
+        }
     }
 }
