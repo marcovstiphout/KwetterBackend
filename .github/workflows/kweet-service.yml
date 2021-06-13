@@ -1,54 +1,97 @@
 name: KweetService
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ master ]
+    branches:
+      - main
     paths:
       - src/Services/KweetService/**
   pull_request:
-    branches: [ master ]
+    types: [opened, synchronize, reopened]
     paths:
       - src/Services/KweetService/**
 
 defaults:
   run:
     working-directory: src
-    
+
 jobs:
+
   build:
+    name: Build
+    # To prevent bugs in case latest has breaking changes
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+    # Checks out the code
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # Sets up the .NET SDK
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v1.7.2
       with:
-        dotnet-version: 5.0.x
-    - name: Restore dependencies
-      run: dotnet restore
+        dotnet-version: '5.0.x'
+    
+    # Installs the dependencies
+    - name: Install dependencies
+      run: dotnet restore ./Services/KweetService/Rest
+
+    # Builds the code
     - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-      
-  build-docker:
-    needs: [ build ]
+      run: dotnet build --no-restore ./Services/KweetService/Rest
+  
+  test:
+    needs: build
+    name: Test
+    # To prevent bugs in case latest has breaking changes
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - name: Build the docker KweetService image
-        run: docker build . --file Services/KweetService/Rest/Dockerfile --tag kwetter-kweet-service:$(date +%s)
-        
-  publish-docker:
-    if: contains(github.ref, 'master')
-    needs: [build-docker]
+    # Checks out the code
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # Tests the code
+    - name: Build
+      run: dotnet test ./Services/KweetService/Tests
+
+  docker:
+    needs: 
+     - test
+    name: Build and push Docker images
+    environment:
+      name: docker
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@master
-    - name: Publish to Registry
-      uses: elgohr/Publish-Docker-Github-Action@master
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+    
+    - name: Cache Docker layers
+      uses: actions/cache@v2
       with:
-        name: marcovstiphout/kwetter-kweet-service
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        dockerfile: Services/KweetService/Rest/Dockerfile   
-        workdir: src
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-buildx-
+    - name: Login to Google Docker registry
+    # Setup gcloud CLI
+      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '270.0.0'
+        service_account_key: ${{ secrets.GOOGLE_REGISTRY_KEY }} 
+    - name: Configure Google Auth
+    # Configure docker to use the gcloud command-line tool as a credential helper
+      run: |
+        # Set up docker to authenticate
+        # via gcloud command-line tool.
+        gcloud auth configure-docker
+    
+    - name: Build and push KweetService Docker image 
+      run: |
+        echo "Building KweetService docker image"
+        docker build -t ${{ secrets.KWEET_SERVICE_REGISTRY }}:latest -f ./Rest/Dockerfile .
+        echo "Publishing KweetService docker image"
+        docker push --all-tags ${{ secrets.KWEET_SERVICE_REGISTRY }}

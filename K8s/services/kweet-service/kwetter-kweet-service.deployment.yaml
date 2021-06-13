@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kwetter-kweet-service
+  namespace: kwetter
+  labels:
+    app: kwetter-kweet-service
+    service: kwetter-kweet-service
+spec:
+  selector:
+    app: kwetter-kweet-service-pod
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kwetter-kweet-service
+  namespace: kwetter
+spec:
+  replicas: 1
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: kwetter-kweet-service-pod
+      version: latest
+  template:
+    metadata:
+      labels:
+        app: kwetter-kweet-service-pod
+        version: latest
+    spec:
+      containers:
+        - name: kwetter-kweet-container
+          image: eu.gcr.io/s64-1-vetis/marco/kwetter/kwetter-kweet-service:latest
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: 250Mi
+              cpu: 200m
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: gcr-json-key   
