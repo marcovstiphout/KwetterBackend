@@ -92,6 +92,6 @@ jobs:
     - name: Build and push KweetService Docker image 
       run: |
         echo "Building KweetService docker image"
-        docker build -t ${{ secrets.KWEET_SERVICE_REGISTRY }}:latest -f ./Rest/Dockerfile .
+        docker build -t ${{ secrets.KWEET_SERVICE_REGISTRY }}:latest -f ./Services/KweetService/Rest/Dockerfile .
         echo "Publishing KweetService docker image"
         docker push --all-tags ${{ secrets.KWEET_SERVICE_REGISTRY }}
