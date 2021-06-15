@@ -10,6 +10,8 @@ using Persistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using KwetterShared;
 using Kwetter.Services.AuthService.Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Kwetter.Services.AuthService.Rest
 {
@@ -36,6 +38,20 @@ namespace Kwetter.Services.AuthService.Rest
                 .AddGoogle(options => {
                     options.ClientId = Configuration.GetValue<string>("Google:ClientId");
                     options.ClientSecret = Configuration.GetValue<string>("Google:ClientSecret"); ;
+                });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://securetoken.google.com/kwetter-cf7f5";
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = "https://securetoken.google.com/kwetter-cf7f5",
+                        ValidateAudience = true,
+                        ValidAudience = "kwetter-cf7f5",
+                        ValidateLifetime = true
+                    };
                 });
 
             services.AddControllers();

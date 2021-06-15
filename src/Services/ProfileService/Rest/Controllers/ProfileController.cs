@@ -1,5 +1,6 @@
 ﻿using Kwetter.Services.ProfileService.Application.Common.Interfaces.Services;
 using Kwetter.Services.ProfileService.Rest.Models.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 namespace Rest.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("[controller]")]
     public class ProfileController : ControllerBase
     {

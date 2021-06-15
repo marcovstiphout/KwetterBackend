@@ -4,11 +4,13 @@ using Kwetter.Services.ProfileService.Application.Handlers;
 using Kwetter.Services.ProfileService.Persistence;
 using Kwetter.Services.ProfileService.Persistence.Contexts;
 using KwetterShared;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace Rest
@@ -29,9 +31,22 @@ namespace Rest
             services.AddPersistence(Configuration);
             services.AddApplication(Configuration);
             services.AddMessaging("ProfileService", builder => {
-                // This tells the application that when it receives a `QuestCompleted` message, it should handle it using the `QuestCompletedMessageHandler`.
                 builder.WithHandler<UserRegisteredMessageHandler>("UserCreatedEvent");
             });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://securetoken.google.com/kwetter-cf7f5";
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = "https://securetoken.google.com/kwetter-cf7f5",
+                        ValidateAudience = true,
+                        ValidAudience = "kwetter-cf7f5",
+                        ValidateLifetime = true
+                    };
+                });
 
             services.AddScoped<IProfileContext>(provider => provider.GetService<ProfileContext>());
 
@@ -54,8 +69,9 @@ namespace Rest
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
