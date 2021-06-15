@@ -24,7 +24,7 @@ namespace Rest
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddPersistence(Configuration);
+            //services.AddPersistence(Configuration);
             services.AddApplication(Configuration);
 
             services.AddScoped<IKweetContext>(provider => provider.GetService<KweetContext>());
