@@ -14,7 +14,6 @@ namespace Kwetter.KweetService.Rest.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
     public class KweetController : ControllerBase
     {
         private readonly ILogger<KweetController> _logger;
