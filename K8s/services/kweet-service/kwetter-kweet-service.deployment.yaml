@@ -50,4 +50,4 @@ spec:
           ports:
             - containerPort: 80
       imagePullSecrets:
-        - name: gcr-json-key   
+        - name: kwetter-kweet-service-secrets
