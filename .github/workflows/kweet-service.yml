@@ -1,14 +1,12 @@
 name: KweetService
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [ master ]
     paths:
       - src/Services/KweetService/**
   pull_request:
-    types: [opened, synchronize, reopened]
+    branches: [ master ]
     paths:
       - src/Services/KweetService/**
 

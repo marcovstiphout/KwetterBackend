@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Kwetter.Services.KweetService.Domain;
 using Kwetter.Services.KweetService.Application.Common.Interfaces;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kwetter.Services.KweetService.Application.Services
 {
@@ -30,7 +32,7 @@ namespace Kwetter.Services.KweetService.Application.Services
 
             if(!success)
             {
-                throw new InvalidOperationException("Something went wrong trying to create the player");
+                throw new InvalidOperationException("Something went wrong trying to create the kweet");
             }
             return kweetToPost;
         }
@@ -40,9 +42,19 @@ namespace Kwetter.Services.KweetService.Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<KweetDTO>> GetKweetsByProfilePaginated(int page, int pageSize, Guid profileId)
+        public async Task<IEnumerable<Kweet>> GetKweetsByProfilePaginated(int page, int pageSize, Guid profileId)
         {
-            throw new NotImplementedException();
+            IEnumerable<Kweet> response = await _kweetContext.Kweets
+                .OrderBy(x => x.KweetPostDate)
+                .Skip(page * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            //var profile = await _context.Profiles.FindAsync(profileId);
+
+            if (response == null) return response;
+
+            return response;
         }
     }
 }

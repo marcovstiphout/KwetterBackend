@@ -8,6 +8,8 @@ using Microsoft.OpenApi.Models;
 using Kwetter.Services.KweetService.Application.Common.Interfaces;
 using Kwetter.Services.KweetService.Persistence;
 using Application;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Rest
 {
@@ -24,8 +26,22 @@ namespace Rest
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            //services.AddPersistence(Configuration);
+            services.AddPersistence(Configuration);
             services.AddApplication(Configuration);
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://securetoken.google.com/kwetter-cf7f5";
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = "https://securetoken.google.com/kwetter-cf7f5",
+                        ValidateAudience = true,
+                        ValidAudience = "kwetter-cf7f5",
+                        ValidateLifetime = true
+                    };
+                });
 
             services.AddScoped<IKweetContext>(provider => provider.GetService<KweetContext>());
 
@@ -45,10 +61,15 @@ namespace Rest
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rest v1"));
             }
 
-            //app.UseHttpsRedirection();
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<KweetContext>();
+                context.Database.EnsureCreated();
+            }
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
