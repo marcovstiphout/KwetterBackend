@@ -1,17 +1,21 @@
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using Kwetter.Services.AuthService.Application.Common.Interfaces;
+using Kwetter.Services.AuthService.Application.Common.Interfaces.Services;
+using Kwetter.Services.AuthService.Infrastructure;
+using KwetterShared;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using Kwetter.Services.AuthService.Persistence.Contexts;
-using Kwetter.Services.AuthService.Application.Common.Interfaces;
-using Persistence;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using KwetterShared;
-using Kwetter.Services.AuthService.Infrastructure;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Persistence;
+using System.Linq;
 
 namespace Kwetter.Services.AuthService.Rest
 {
@@ -27,18 +31,15 @@ namespace Kwetter.Services.AuthService.Rest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(options =>
+            var firebaseSettings = Configuration.GetSection("FirebaseConfig").GetChildren();
+            var configurationSections = firebaseSettings.ToList();
+            var json = JsonConvert.SerializeObject(configurationSections.AsEnumerable()
+                .ToDictionary(k => k.Key, v => v.Value));
+            var firebaseApp = FirebaseApp.Create(new AppOptions
             {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/api/Auth/google-login";
-                })
-                .AddGoogle(options => {
-                    options.ClientId = Configuration.GetValue<string>("Google:ClientId");
-                    options.ClientSecret = Configuration.GetValue<string>("Google:ClientSecret"); ;
-                });
+                Credential = GoogleCredential.FromJson(json)
+            });
+            services.AddSingleton(firebaseApp);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -59,11 +60,13 @@ namespace Kwetter.Services.AuthService.Rest
             services.AddPersistence(Configuration);
             services.AddMessaging("AuthService");
             services.AddScoped<IAuthService, Application.Services.AuthService>();
+            services.AddScoped<IAuthoService, Application.Services.AuthorizationService>();
+            services.AddScoped<ITokenChecker, FirebaseVerifier>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Kwetter API", Version = "v1", Description = "The Auth-API for the Kwetter Project" });
             });
-            JWTSettings.SecretKey = Configuration.GetSection("JWTSettings:SecretKey").Value;
+            //JWTSettings.SecretKey = Configuration.GetSection("JWTSettings:SecretKey").Value;
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -79,8 +82,9 @@ namespace Kwetter.Services.AuthService.Rest
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

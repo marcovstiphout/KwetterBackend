@@ -12,4 +12,8 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Kwetter.Services.AuthService.Application.csproj" />
+  </ItemGroup>
+
 </Project>

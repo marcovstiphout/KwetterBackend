@@ -1,17 +1,10 @@
 ﻿using Domain;
 using Kwetter.Services.AuthService.Application.Common.Interfaces;
 using Kwetter.Services.AuthService.Application.Common.Models;
-using Kwetter.Services.AuthService.Infrastructure;
 using Kwetter.Services.Shared.Messaging.Interfaces;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Kwetter.Services.AuthService.Application.Services
@@ -45,7 +38,7 @@ namespace Kwetter.Services.AuthService.Application.Services
                 await CreateAccountAsync(email, name);
             }
 
-            return TokenGenerator.GenerateToken(JWTSettings.SecretKey, email);
+            return null;//TokenGenerator.GenerateToken(JWTSettings.SecretKey, email);
         }
 
         public async Task<bool> CheckAccountExistsAsync(string email)

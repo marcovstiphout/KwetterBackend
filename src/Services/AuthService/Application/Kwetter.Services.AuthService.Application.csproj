@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FirebaseAdmin" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="5.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
@@ -18,7 +19,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\KwetterShared\Kwetter.Services.Shared.csproj" />
     <ProjectReference Include="..\Domain\Kwetter.Services.AuthService.Domain.csproj" />
-    <ProjectReference Include="..\Infrastructure\Kwetter.Services.AuthService.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
