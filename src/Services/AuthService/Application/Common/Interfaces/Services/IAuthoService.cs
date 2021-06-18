@@ -10,6 +10,6 @@ namespace Kwetter.Services.AuthService.Application.Common.Interfaces.Services
     public interface IAuthoService
     {
         Task<UserDTO> SetUserClaims(string uid);
-        Task<bool> AssignElevatedPermissions(string assigningModeratorUid, Guid userToElevate, string roleToAssign);
+        Task<bool> AssignElevatedPermissions(Guid userToElevate, string roleToAssign);
     }
 }

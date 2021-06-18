@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -59,7 +60,7 @@ namespace Kwetter.Services.AuthService.Application.Services
                     {
                         {"Id", user.Id},
                         {"user", true},
-                        {"Role","User" }
+                        {ClaimTypes.Role,"User" }
                     };
                     await _tokenChecker.AddClaims(claimsDto.Subject, claims);
 
@@ -84,19 +85,15 @@ namespace Kwetter.Services.AuthService.Application.Services
         {
             await _publisher.PublishMessageAsync<UserDTO>("UserCreatedEvent", userDTO);
         }
-        public async Task<bool> AssignElevatedPermissions(string assigningModeratorUid, Guid userToElevate, string roleToAssign)
+        public async Task<bool> AssignElevatedPermissions(Guid userToElevate, string roleToAssign)
         {
-            if(await _tokenChecker.CheckValidPermissions(assigningModeratorUid))
+            var user = await _authContext.Users.FirstOrDefaultAsync(x => x.Id == userToElevate);
+            var claims = new Dictionary<string, object>
             {
-                var user = await _authContext.Users.FirstOrDefaultAsync(x => x.Id == userToElevate);
-                var claims = new Dictionary<string, object>
-                {
-                    {"Id", user.Id},
-                    {"Role", roleToAssign}
-                };
-                return await _tokenChecker.AddClaims(user.LoginProviderId, claims);
-            }
-            return false;
+                {"Id", user.Id},
+                {ClaimTypes.Role, roleToAssign}
+            };
+            return await _tokenChecker.AddClaims(user.LoginProviderId, claims);
         }
     }
 }

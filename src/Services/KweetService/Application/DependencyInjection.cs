@@ -14,5 +14,10 @@ namespace Application
 
             return services;
         }
+        public static IServiceCollection AddMongoApplication(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddScoped<IKweetService, MongoKweetService>();
+            return services;
+        }
     }
 }

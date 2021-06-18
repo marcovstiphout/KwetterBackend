@@ -19,6 +19,8 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
+		<PackageReference Include="MongoDB.Driver" Version="2.12.4" />
 	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Application\Kwetter.Services.KweetService.Application.csproj" />

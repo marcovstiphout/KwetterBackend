@@ -1,5 +1,6 @@
 ﻿using Kwetter.Services.AuthService.Application.Common.Interfaces.Services;
 using Kwetter.Services.AuthService.Rest.Models.Requests;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -42,11 +43,12 @@ namespace Kwetter.Services.AuthService.Rest.Controllers
         [HttpPost("assignRole")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator,Moderator")]
         public async Task<IActionResult> AssignRole([FromBody] AssignRoleRequest assignRoleRequest)
         {
             if (ModelState.IsValid)
             {
-                var response = await _authService.AssignElevatedPermissions(assignRoleRequest.ModeratorJWT, assignRoleRequest.targetId,assignRoleRequest.roleToAssign);
+                var response = await _authService.AssignElevatedPermissions(assignRoleRequest.targetId,assignRoleRequest.roleToAssign);
                 return new OkObjectResult(response);
             }
 

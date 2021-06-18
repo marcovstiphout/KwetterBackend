@@ -9,8 +9,6 @@ namespace Kwetter.Services.AuthService.Rest.Models.Requests
     public class AssignRoleRequest
     {
         [Required]
-        public string ModeratorJWT { get; set; }
-        [Required]
         public Guid targetId { get; set; }
         [Required]
         public string roleToAssign { get; set; }

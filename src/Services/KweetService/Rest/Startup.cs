@@ -27,7 +27,9 @@ namespace Rest
         {
             services.AddControllers();
             services.AddPersistence(Configuration);
-            services.AddApplication(Configuration);
+            services.AddMongo(Configuration);
+            services.AddMongoApplication(Configuration);
+            //services.AddApplication(Configuration);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

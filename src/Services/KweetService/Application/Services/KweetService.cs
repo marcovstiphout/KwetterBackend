@@ -8,15 +8,25 @@ using Kwetter.Services.KweetService.Domain;
 using Kwetter.Services.KweetService.Application.Common.Interfaces;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
+using MongoDB.Bson;
+using Kwetter.Services.KweetService.Domain.MongoEntities;
 
 namespace Kwetter.Services.KweetService.Application.Services
 {
     public class KweetService : IKweetService
     {
         private readonly IKweetContext _kweetContext;
-        public KweetService(IKweetContext context)
+        private readonly IMongoCollection<MongoKweet> _kweets;
+        private readonly IMongoDatabase database;
+        private readonly MongoClient client;
+        public KweetService(IKweetContext context, IMongoDatabaseSettings settings)
         {
             _kweetContext = context;
+            client = new MongoClient(settings.ConnectionString);
+            database = client.GetDatabase(settings.DatabaseName);
+
+            _kweets = database.GetCollection<MongoKweet>(settings.CollectionName);
         }
         public async Task<KweetDTO> CreateKweetAsync(Guid profileID, string kweetText)
         {
@@ -30,7 +40,7 @@ namespace Kwetter.Services.KweetService.Application.Services
             await _kweetContext.Kweets.AddAsync(kweetToPost);
             bool success = await _kweetContext.SaveChangesAsync() > 0;
 
-            if(!success)
+            if (!success)
             {
                 throw new InvalidOperationException("Something went wrong trying to create the kweet");
             }
