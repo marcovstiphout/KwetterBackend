@@ -3,7 +3,7 @@ using Kwetter.Services.ProfileService.Application.Common.Interfaces;
 using Kwetter.Services.ProfileService.Application.Handlers;
 using Kwetter.Services.ProfileService.Persistence;
 using Kwetter.Services.ProfileService.Persistence.Contexts;
-using KwetterShared;
+using Kwetter.Services.Shared;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

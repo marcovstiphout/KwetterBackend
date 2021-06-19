@@ -22,7 +22,7 @@ namespace Kwetter.Services.Shared.Messaging
             {
                 var factory = new ConnectionFactory
                 {
-                    Uri = new Uri("amqp://guest:guest@localhost:7101"),
+                    Uri = new Uri("amqp://guest:guest@34.118.92.113:5672"),
                     AutomaticRecoveryEnabled = true // When the connection is lost, this will automatically reconnect us when it can get back up
                 };
                 _connection = factory.CreateConnection();

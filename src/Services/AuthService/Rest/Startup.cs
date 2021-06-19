@@ -3,7 +3,7 @@ using Google.Apis.Auth.OAuth2;
 using Kwetter.Services.AuthService.Application.Common.Interfaces;
 using Kwetter.Services.AuthService.Application.Common.Interfaces.Services;
 using Kwetter.Services.AuthService.Infrastructure;
-using KwetterShared;
+using Kwetter.Services.Shared;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
