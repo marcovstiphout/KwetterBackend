@@ -57,7 +57,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kwetter.Services.Shared", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kwetter.Services.AuthService.Infrastructure", "Services\AuthService\Infrastructure\Kwetter.Services.AuthService.Infrastructure.csproj", "{344E16BA-5C22-4ACD-995D-4248C6BA4417}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Services\AuthService\Tests\Tests.csproj", "{D8181019-BD89-4936-8312-2592130DB451}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kwetter.Services.AuthService.Tests", "Services\AuthService\Tests\Kwetter.Services.AuthService.Tests.csproj", "{D8181019-BD89-4936-8312-2592130DB451}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

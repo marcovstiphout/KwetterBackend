@@ -45,8 +45,11 @@ namespace Kwetter.Services.KweetService.Application.Services
 
         public async Task<IEnumerable<Kweet>> GetKweetsByProfilePaginated(int page, int pageSize, Guid profileId)
         {
-            IEnumerable<Kweet> response = (IEnumerable<Kweet>)_kweets.Find(book => true).Limit(pageSize).Skip(page * pageSize);
-
+            List<Kweet> response = new List<Kweet>();
+            foreach (MongoKweet k in _kweets.Find(book => true).Limit(pageSize).Skip(page * pageSize).ToList())
+            {
+                response.Add(k);
+            }
             return response;
         }
     }
