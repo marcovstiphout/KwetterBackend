@@ -60,14 +60,15 @@ namespace Kwetter.Services.AuthService.Rest
             services.AddHttpClient<IAuthService, Application.Services.AuthService>();
             services.AddPersistence(Configuration);
             services.AddMessaging("AuthService");
+
             services.AddScoped<IAuthService, Application.Services.AuthService>();
             services.AddScoped<IAuthoService, Application.Services.AuthorizationService>();
             services.AddScoped<ITokenChecker, FirebaseVerifier>();
+            services.AddScoped<IAuthContext>(provider => provider.GetService<AuthContext>());
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Kwetter API", Version = "v1", Description = "The Auth-API for the Kwetter Project" });
             });
-            //JWTSettings.SecretKey = Configuration.GetSection("JWTSettings:SecretKey").Value;
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -90,7 +91,6 @@ namespace Kwetter.Services.AuthService.Rest
 
             app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.UseEndpoints(endpoints =>
             {

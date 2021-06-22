@@ -39,7 +39,7 @@ namespace Kwetter.KweetService.Rest.Controllers
             }
             return StatusCode(500);
         }
-        [HttpGet("/getTimeline")]
+        [HttpGet("getTimeline")]
         public async Task<IActionResult> GetKweetsPaginatedTimeline([FromQuery] GetKweetsRequest getKweets)
         {
             if (ModelState.IsValid)
