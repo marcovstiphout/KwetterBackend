@@ -11,8 +11,8 @@ COPY ["Services/AuthService/Rest/Kwetter.Services.AuthService.Rest.csproj", "Ser
 COPY ["Services/AuthService/Application/Kwetter.Services.AuthService.Application.csproj", "Services/AuthService/Application/"]
 COPY ["Services/AuthService/Domain/Kwetter.Services.AuthService.Domain.csproj", "Services/AuthService/Domain/"]
 COPY ["Services/Shared/KwetterShared/Kwetter.Services.Shared.csproj", "Services/Shared/KwetterShared/"]
-COPY ["Services/AuthService/Infrastructure/Kwetter.Services.AuthService.Infrastructure.csproj", "Services/AuthService/Infrastructure/"]
 COPY ["Services/AuthService/Persistence/Kwetter.Services.AuthService.Persistence.csproj", "Services/AuthService/Persistence/"]
+COPY ["Services/AuthService/Infrastructure/Kwetter.Services.AuthService.Infrastructure.csproj", "Services/AuthService/Infrastructure/"]
 RUN dotnet restore "Services/AuthService/Rest/Kwetter.Services.AuthService.Rest.csproj"
 COPY . .
 WORKDIR "/src/Services/AuthService/Rest"

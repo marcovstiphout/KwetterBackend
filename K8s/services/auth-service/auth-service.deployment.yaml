@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kwetter-auth-service
+  namespace: default
+  labels:
+    app: kwetter-auth-service
+    service: kwetter-auth-service
+spec:
+  selector:
+    app: kwetter-auth-service-pod
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kwetter-auth-service
+  namespace: default
+spec:
+  replicas: 1
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: kwetter-auth-service-pod
+      version: latest
+  template:
+    metadata:
+      labels:
+        app: kwetter-auth-service-pod
+        version: latest
+    spec:
+      containers:
+        - name: kwetter-auth-container
+          image: eu.gcr.io/s64-1-vetis/marco/kwetter/kwetter-auth-service:latest
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: auth-service-secret
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          ports:
+            - containerPort: 80
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: auth-service-autoscaler
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: kwetter-auth-service
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 60

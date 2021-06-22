@@ -55,3 +55,17 @@ spec:
               memory: 256Mi
           ports:
             - containerPort: 80
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: kweet-service-autoscaler
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: kwetter-kweet-service
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 60
