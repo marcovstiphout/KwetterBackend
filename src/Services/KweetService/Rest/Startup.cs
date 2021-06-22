@@ -26,10 +26,8 @@ namespace Rest
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddPersistence(Configuration);
             services.AddMongo(Configuration);
             services.AddMongoApplication(Configuration);
-            //services.AddApplication(Configuration);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -61,13 +59,6 @@ namespace Rest
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rest v1"));
-            }
-
-            using (var scope = app.ApplicationServices.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                var context = services.GetRequiredService<KweetContext>();
-                context.Database.EnsureCreated();
             }
 
             app.UseRouting();

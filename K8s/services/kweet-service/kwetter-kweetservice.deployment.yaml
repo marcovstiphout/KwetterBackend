@@ -43,17 +43,15 @@ spec:
         - name: kwetter-kweet-container
           image: eu.gcr.io/s64-1-vetis/marco/kwetter/kwetter-kweet-service:latest
           imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: kweet-service-mongo-secret
           resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
             limits:
-              memory: 250Mi
-              cpu: 200m
+              cpu: 250m
+              memory: 256Mi
           ports:
             - containerPort: 80
-          volumeMounts:
-            – name: secrets
-          mountPath: /app/appsettings.json
-          subPath: appsettings.json
-          volumes:
-            – name: secrets
-          secret:
-            secretName: kweetservice-settings

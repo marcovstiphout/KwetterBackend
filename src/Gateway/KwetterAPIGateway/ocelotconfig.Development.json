@@ -1,7 +1,7 @@
 {
   "Routes": [
     {
-      "DownstreamPathTemplate": "/Kweet",
+      "DownstreamPathTemplate": "/api/Kweet/",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -10,10 +10,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/kweet",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Delete" ]
     },
     {
-      "DownstreamPathTemplate": "/Profile",
+      "DownstreamPathTemplate": "/Profile/",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -23,6 +23,18 @@
       ],
       "UpstreamPathTemplate": "/api/profile",
       "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Authorization/",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5002
+        }
+      ],
+      "UpstreamPathTemplate": "/api/auth",
+      "UpstreamHttpMethod": [ "Get", "Post", "Delete" ]
     }
   ],
   "GlobalConfiguration": {
