@@ -66,6 +66,13 @@ namespace Rest
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rest v1"));
             }
 
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<ProfileContext>();
+                context.Database.EnsureCreated();
+            }
+
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthentication();

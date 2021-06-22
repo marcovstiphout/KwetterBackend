@@ -3,6 +3,7 @@ using Google.Apis.Auth.OAuth2;
 using Kwetter.Services.AuthService.Application.Common.Interfaces;
 using Kwetter.Services.AuthService.Application.Common.Interfaces.Services;
 using Kwetter.Services.AuthService.Infrastructure;
+using Kwetter.Services.AuthService.Persistence.Contexts;
 using Kwetter.Services.Shared;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -76,6 +77,13 @@ namespace Kwetter.Services.AuthService.Rest
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rest v1"));
+            }
+
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<AuthContext>();
+                context.Database.EnsureCreated();
             }
 
             app.UseRouting();
