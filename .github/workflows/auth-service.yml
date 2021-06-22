@@ -90,6 +90,6 @@ jobs:
     - name: Build and push AuthService Docker image 
       run: |
         echo "Building AuthService docker image"
-        docker build -t ${{ secrets.AUTH_SERVICE_REGISTRY }}:latest -f ./Services/AuthService/Rest/Dockerfile .
+        docker build -t ${{ secrets.KWEET_SERVICE_REGISTRY }}:latest -f ./Services/AuthService/Rest/Dockerfile .
         echo "Publishing AuthService docker image"
-        docker push --all-tags ${{ secrets.AUTH_SERVICE_REGISTRY }}
+        docker push --all-tags ${{ secrets.KWEET_SERVICE_REGISTRY }}

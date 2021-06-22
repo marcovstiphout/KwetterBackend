@@ -90,6 +90,6 @@ jobs:
     - name: Build and push ProfileService Docker image 
       run: |
         echo "Building ProfileService docker image"
-        docker build -t ${{ secrets.PROFILE_SERVICE_REGISTRY }}:latest -f ./Services/ProfileService/Rest/Dockerfile .
+        docker build -t ${{ secrets.KWEET_SERVICE_REGISTRY }}:latest -f ./Services/ProfileService/Rest/Dockerfile .
         echo "Publishing ProfileService docker image"
-        docker push --all-tags ${{ secrets.PROFILE_SERVICE_REGISTRY }}
+        docker push --all-tags ${{ secrets.KWEET_SERVICE_REGISTRY }}
