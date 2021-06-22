@@ -30,7 +30,7 @@ namespace Kwetter.Services.ProfileService.Application.Services
 
             if (!success)
             {
-                throw new InvalidOperationException("Something went wrong trying to create the player");
+                throw new InvalidOperationException("Something went wrong trying to create the profile");
             }
             return profileToCreate;
         }
